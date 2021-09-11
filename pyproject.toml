@@ -1,0 +1,36 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+dynamic = ["version", "description"]
+name = "zlig"
+authors = [{name = "Tzu-ping Chung", email = "uranusjr@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "flit_core >=3.2,<4",
+    "jinja2 >3",
+    "packaging >=19.1",
+    "packaging-dists >= 0.3",
+    "toml",
+    "ziglang >=0.8.0",
+]
+
+[project.urls]
+Home = "https://github.com/uranusjr/zlig"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[[tool.mypy.overrides]]
+module = "flit_core.*"
+ignore_missing_imports = true

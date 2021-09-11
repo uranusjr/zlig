@@ -1,0 +1,4 @@
+/build.zig
+/dist
+/zig-cache
+/zig-out

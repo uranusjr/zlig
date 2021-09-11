@@ -1,0 +1,28 @@
+const std = @import("std");
+
+pub fn build(b: *std.build.Builder) void {
+
+const target = b.standardTargetOptions(.{});
+const mode = b.standardReleaseOptions();
+
+{% for ext in extensions -%}
+{% set var = ext.varname -%}
+const {{ var }} = b.addSharedLibrary("{{ ext.modname }}", null, .unversioned);
+{{ var }}.setTarget(target);
+{{ var }}.setBuildMode(mode);
+{{ var }}.setOutputDir("zig-out/lib/{{ ext.directory_in_package }}");
+{{ var }}.addCSourceFiles(&.{
+    {% for source in ext.iter_sources() -%}
+    "{{ source.as_posix() }}",
+    {%- endfor %}
+}, &.{});
+{{ var }}.addIncludeDir("{{ includepy.as_posix() }}");
+{{ var }}.addLibPath("{{ libpy.as_posix() }}");
+{% if pythonlib -%}
+{{ var }}.linkSystemLibrary("{{ pythonlib }}");
+{%- endif %}
+{{ var }}.linkLibC();
+{{ var }}.install();
+{%- endfor %}
+
+}
